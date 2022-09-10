@@ -172,4 +172,16 @@ class Signaling {
     }
   }
 
+  Future<void> openUserMedia(
+    RTCVideoRenderer localVideo,
+    RTCVideoRenderer remoteVideo,
+  ) async {
+    var stream = await navigator.mediaDevices
+        .getUserMedia({'video': true, 'audio': false});
+
+    localVideo.srcObject = stream;
+    localStream = stream;
+
+    remoteVideo.srcObject = await createLocalMediaStream('key');
+  }
 }
