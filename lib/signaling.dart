@@ -184,4 +184,35 @@ class Signaling {
 
     remoteVideo.srcObject = await createLocalMediaStream('key');
   }
+
+  Future<void> hangUp(RTCVideoRenderer localVideo) async {
+    List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
+    for (var track in tracks) {
+      track.stop();
+    }
+
+    if (remoteStream != null) {
+      remoteStream!.getTracks().forEach((track) => track.stop());
+    }
+    if (peerConnection != null) peerConnection!.close();
+
+    if (roomId != null) {
+      var db = FirebaseFirestore.instance;
+      var roomRef = db.collection('rooms').doc(roomId);
+      var calleeCandidates = await roomRef.collection('calleeCandidates').get();
+      for (var document in calleeCandidates.docs) {
+        document.reference.delete();
+      }
+
+      var callerCandidates = await roomRef.collection('callerCandidates').get();
+      for (var document in callerCandidates.docs) {
+        document.reference.delete();
+      }
+
+      await roomRef.delete();
+    }
+
+    localStream!.dispose();
+    remoteStream?.dispose();
+  }
 }
