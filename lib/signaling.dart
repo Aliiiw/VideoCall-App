@@ -102,6 +102,24 @@ class Signaling {
     peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
       print('ICE gathering state changed: $state');
     };
+
+    peerConnection?.onConnectionState = (RTCPeerConnectionState state) {
+      print('Connection state change: $state');
+    };
+
+    peerConnection?.onSignalingState = (RTCSignalingState state) {
+      print('Signaling state change: $state');
+    };
+
+    peerConnection?.onIceGatheringState = (RTCIceGatheringState state) {
+      print('ICE connection state change: $state');
+    };
+
+    peerConnection?.onAddStream = (MediaStream stream) {
+      print("Add remote stream");
+      onAddRemoteStream?.call(stream);
+      remoteStream = stream;
+    };
   }
 
   Future<void> joinRoom(String roomId, RTCVideoRenderer remoteVideo) async {
@@ -211,8 +229,5 @@ class Signaling {
 
       await roomRef.delete();
     }
-
-    localStream!.dispose();
-    remoteStream?.dispose();
   }
 }
