@@ -12,7 +12,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,22 +19,22 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   Signaling signaling = Signaling();
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
   TextEditingController textEditingController = TextEditingController(text: '');
 
@@ -73,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  signaling.openUserMedia(_localRenderer, _remoteRenderer);
+                  // signaling.openUserMedia(_localRenderer, _remoteRenderer);
                 },
                 child: const Text("Open camera & microphone"),
               ),
@@ -82,9 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  roomId = await signaling.createRoom(_remoteRenderer);
-                  textEditingController.text = roomId!;
-                  setState(() {});
+                  // roomId = await signaling.createRoom(_remoteRenderer);
+                  // textEditingController.text = roomId!;
+                  // setState(() {});
                 },
                 child: const Text("Create room"),
               ),
@@ -94,25 +93,25 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () {
                   // Add roomId
-                  signaling.joinRoom(
-                    textEditingController.text,
-                    _remoteRenderer,
-                  );
+                  //   signaling.joinRoom(
+                  //     textEditingController.text,
+                  //     _remoteRenderer,
+                  //   );
                 },
                 child: const Text("Join room"),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               ElevatedButton(
                 onPressed: () {
-                  signaling.hangUp(_localRenderer);
+                  // signaling.hangUp(_localRenderer);
                 },
                 child: const Text("Hangup"),
               )
             ],
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
